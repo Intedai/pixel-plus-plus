@@ -1,5 +1,5 @@
-# Skin++
-Freeware Minecraft skin editor, heavily inspired by Paint.NET
+# Pixel++
+Work in progress FOSS PixelArt editor inspired by Paint.NET and Aseprite
 
 ## Building
 

@@ -15,7 +15,7 @@ MainWindow::MainWindow(QWidget *parent)
         colorSelectorAct->setChecked(false);
     });
 
-    setWindowTitle(tr("Skin++ - Untitled"));
+    setWindowTitle(tr("Pixel++ - Untitled"));
     resize(800, 600);
 }
 
