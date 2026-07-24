@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>ui/swap_arrows.png</file>
+    </qresource>
+</RCC>

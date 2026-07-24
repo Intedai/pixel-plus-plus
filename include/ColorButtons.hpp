@@ -4,6 +4,14 @@
 #include <QPainter>
 #include <QPainterPath>
 #include <QColor>
+#include <QPixmap>
+#include <QPoint>
+#include <QMouseEvent>
+
+/*
+TODO:
+Avoid magic numbers and create constant rectangles instead of the one in mouse event and more...
+*/
 
 class ColorButtons : public QWidget
 {
@@ -12,10 +20,14 @@ public:
     ColorButtons(QWidget* parent = nullptr);
 protected:
     void paintEvent(QPaintEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
 public slots:
     void setColor(int index, QColor color);
     void setForegroundColor(QColor color);
     void setBackgroundColor(QColor color);
 private:
+    void swapColors();
+    // TODO: add void resetColors();
+    QPixmap swap_arrow;
     QColor colors[2];
 };

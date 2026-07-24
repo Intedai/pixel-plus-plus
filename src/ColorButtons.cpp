@@ -1,7 +1,8 @@
 #include "ColorButtons.hpp"
 
 ColorButtons::ColorButtons(QWidget* parent)
-    : QWidget(parent)
+    : QWidget(parent),
+      swap_arrow(":/ui/swap_arrows.png")
 {
     setMinimumSize(45, 45);
     colors[0] = Qt::black;
@@ -26,6 +27,14 @@ void ColorButtons::setBackgroundColor(QColor color)
     setColor(1, color);
 }
 
+void ColorButtons::swapColors()
+{
+    QColor temp = colors[0];
+    colors[0] = colors[1];
+    colors[1] = temp;
+    update();
+}
+
 void ColorButtons::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
@@ -44,4 +53,16 @@ void ColorButtons::paintEvent(QPaintEvent *event)
     p.setPen(Qt::white);
     p.setBrush(colors[0]);
     p.drawRect(1, 1, 26, 26);
+
+    p.drawPixmap(29,0, swap_arrow);
+}
+
+void ColorButtons::mousePressEvent(QMouseEvent *event)
+{
+    QPoint clickPos = event->pos();
+    QRect swap = QRect(29, 0, swap_arrow.width(), swap_arrow.height());
+    
+    if (swap.contains(clickPos)) {
+        swapColors();
+    }
 }
