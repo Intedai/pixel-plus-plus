@@ -27,7 +27,8 @@ public slots:
     void setBackgroundColor(QColor color);
 private:
     void swapColors();
-    // TODO: add void resetColors();
-    QPixmap swap_arrow;
+    void resetColors();
+    QPixmap swapBtnPixmap;
     QColor colors[2];
+    QColor defaultColors[2];
 };

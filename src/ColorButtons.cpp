@@ -2,11 +2,14 @@
 
 ColorButtons::ColorButtons(QWidget* parent)
     : QWidget(parent),
-      swap_arrow(":/ui/swap_arrows.png")
+      swapBtnPixmap(":/ui/swap_arrows.png")
 {
     setMinimumSize(45, 45);
-    colors[0] = Qt::black;
-    colors[1] = Qt::white;
+    defaultColors[0] = Qt::black;
+    defaultColors[1] = Qt::white;
+
+    colors[0] = defaultColors[0];
+    colors[1] = defaultColors[1];
 }
 
 void ColorButtons::setColor(int index, QColor color)
@@ -35,6 +38,13 @@ void ColorButtons::swapColors()
     update();
 }
 
+void ColorButtons::resetColors()
+{
+    colors[0] = defaultColors[0];
+    colors[1] = defaultColors[1];
+    update();
+}
+
 void ColorButtons::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
@@ -53,16 +63,31 @@ void ColorButtons::paintEvent(QPaintEvent *event)
     p.setPen(Qt::white);
     p.setBrush(colors[0]);
     p.drawRect(1, 1, 26, 26);
-
-    p.drawPixmap(29,0, swap_arrow);
+    
+    // Reset colors button
+    p.setBrush(defaultColors[0]);
+    p.drawRect(2, 31, 7, 7);
+    p.setBrush(defaultColors[1]);
+    p.drawRect(6, 35, 7, 7);
+    
+    // Swap colors button
+    p.drawPixmap(29,0, swapBtnPixmap);
 }
 
 void ColorButtons::mousePressEvent(QMouseEvent *event)
 {
     QPoint clickPos = event->pos();
-    QRect swap = QRect(29, 0, swap_arrow.width(), swap_arrow.height());
+    QRect swap = QRect(29, 0, swapBtnPixmap.width(), swapBtnPixmap.height());
     
-    if (swap.contains(clickPos)) {
+    if (swap.contains(clickPos))
+    {
         swapColors();
+    }
+
+    QRect reset = QRect(2,31, 12, 12);
+
+    if (reset.contains(clickPos))
+    {
+        resetColors();
     }
 }
