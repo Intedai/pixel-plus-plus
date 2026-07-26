@@ -12,6 +12,11 @@ ColorButtons::ColorButtons(QWidget* parent)
     colors[1] = defaultColors[1];
 }
 
+QSize ColorButtons::sizeHint() const
+{
+    return {45, 45};
+}
+
 void ColorButtons::setColor(int index, QColor color)
 {
     Q_ASSERT(index == 0 || index == 1);
@@ -45,30 +50,58 @@ void ColorButtons::resetColors()
     update();
 }
 
+QRect ColorButtons::fgRect() const
+{
+    return {1, 1, colorReqtSize, colorReqtSize};
+}
+
+QRect ColorButtons::bgRect() const
+{
+    int bgColorTopLeft{width() - (colorReqtSize + 1 + 2) + 1};
+    return {bgColorTopLeft, bgColorTopLeft, colorReqtSize, colorReqtSize};
+}
+
+QRect ColorButtons::swapBtnRect() const
+{
+    return {colorReqtSize + 1 + 2, 0, swapBtnPixmap.width(), swapBtnPixmap.height()};
+}
+
+QRect ColorButtons::resetBtnRect() const
+{
+    int dim{width() - (colorReqtSize + 1 + 2) - 2 * 2};
+    return {2, (colorReqtSize + 1 + 2) + 2, dim, dim};
+}
+
+void ColorButtons::drawColorSquare(QPainter& p, QRect rect, QColor color)
+{
+    // First Border
+    p.setBrush(Qt::NoBrush);
+    p.setPen(Qt::black);
+    p.drawRect(rect.x() - 1, rect.y() - 1, colorReqtSize+2, colorReqtSize+2);
+
+    // Second border and color square
+    p.setPen(Qt::white);
+    p.setBrush(color);
+    p.drawRect(rect);
+}
+
 void ColorButtons::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
 
     QPainter p(this);
 
-    p.setPen(Qt::white);
-    p.setBrush(colors[1]);
-    p.drawRect(17, 17, 26, 26);
+    int bgColorTopLeft{width() - (colorReqtSize + 1 + 2)};
+    drawColorSquare(p, bgRect(), colors[1]);
+    drawColorSquare(p, fgRect(), colors[0]);
 
-    p.setBrush(Qt::transparent);
-    p.setPen(Qt::black);
-    p.drawRect(0, 0, 28, 28);
-    p.drawRect(16, 16, 28, 28);
-
-    p.setPen(Qt::white);
-    p.setBrush(colors[0]);
-    p.drawRect(1, 1, 26, 26);
-    
     // Reset colors button
     p.setBrush(defaultColors[0]);
-    p.drawRect(2, 31, 7, 7);
+    p.drawRect(2, (colorReqtSize + 1 + 2) + 2, resetSquareSize, resetSquareSize);
+
+    int dist{(bgColorTopLeft - resetSquareSize - 1) / 2};
     p.setBrush(defaultColors[1]);
-    p.drawRect(6, 35, 7, 7);
+    p.drawRect(2 + dist, ((colorReqtSize + 1 + 2) + 2) + dist, resetSquareSize, resetSquareSize);
     
     // Swap colors button
     p.drawPixmap(29,0, swapBtnPixmap);
@@ -77,16 +110,13 @@ void ColorButtons::paintEvent(QPaintEvent *event)
 void ColorButtons::mousePressEvent(QMouseEvent *event)
 {
     QPoint clickPos = event->pos();
-    QRect swap = QRect(29, 0, swapBtnPixmap.width(), swapBtnPixmap.height());
     
-    if (swap.contains(clickPos))
+    if (swapBtnRect().contains(clickPos))
     {
         swapColors();
     }
 
-    QRect reset = QRect(2,31, 12, 12);
-
-    if (reset.contains(clickPos))
+    if (resetBtnRect().contains(clickPos))
     {
         resetColors();
     }
