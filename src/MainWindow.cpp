@@ -46,27 +46,27 @@ void MainWindow::setColorSelectorOn(bool on)
 
 void MainWindow::createActions()
 {
-    newFileAct = new QAction(tr("&New"), this);
+    newFileAct = new QAction(QIcon(":/ui/new_button.png"), tr("&New"), this);
     newFileAct->setShortcuts(QKeySequence::New);
     connect(newFileAct, &QAction::triggered, this, &MainWindow::newFile);
 
-    openFileAct = new QAction(tr("&Open"), this);
+    openFileAct = new QAction(QIcon(":/ui/open_button.png"), tr("&Open"), this);
     openFileAct->setShortcuts(QKeySequence::Open);
     connect(openFileAct, &QAction::triggered, this, &MainWindow::openFile);
 
-    quitAct = new QAction(tr("&Quit"), this);
+    quitAct = new QAction(QIcon(":/ui/quit_button.png"), tr("&Quit"), this);
     quitAct->setShortcuts(QKeySequence::Quit);
     connect(quitAct, &QAction::triggered, this, &MainWindow::close);
 
-    undoAct = new QAction(tr("&Undo"), this);
+    undoAct = new QAction(QIcon(":/ui/undo_button.png"), tr("&Undo"), this);
     undoAct->setShortcuts(QKeySequence::Undo);
     connect(undoAct, &QAction::triggered, this, &MainWindow::undo);
 
-    redoAct = new QAction(tr("&Redo"), this);
+    redoAct = new QAction(QIcon(":/ui/redo_button.png"), tr("&Redo"), this);
     redoAct->setShortcuts(QKeySequence::Redo);
     connect(redoAct, &QAction::triggered, this, &MainWindow::redo);
 
-    colorSelectorAct = new QAction(tr("&Color Selector"), this);
+    colorSelectorAct = new QAction(QIcon(":/ui/color_wheel_button.png"), tr("&Color Selector"), this);
     colorSelectorAct->setCheckable(true);
     connect(colorSelectorAct, &QAction::toggled, this, &MainWindow::setColorSelectorOn);
 }

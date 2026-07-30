@@ -1,5 +1,11 @@
 <RCC>
     <qresource prefix="/">
         <file>ui/swap_arrows.png</file>
+        <file>ui/color_wheel_button.png</file>
+        <file>ui/redo_button.png</file>
+        <file>ui/undo_button.png</file>
+        <file>ui/open_button.png</file>
+        <file>ui/new_button.png</file>
+        <file>ui/quit_button.png</file>
     </qresource>
 </RCC>
