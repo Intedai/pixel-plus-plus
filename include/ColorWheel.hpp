@@ -24,6 +24,7 @@ protected:
 private:
     static constexpr double RADIUS {130 / 2.0};
     static constexpr double VALUE {1};
+    void drawPointer(QPainter& p);
     QColor selectedColor;
 signals:
     void ColorSelected(int index, const QColor& color);

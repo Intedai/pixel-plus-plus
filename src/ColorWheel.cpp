@@ -10,6 +10,29 @@ QSize ColorWheel::sizeHint() const
     return QSize(RADIUS * 2, RADIUS * 2);
 }
 
+void ColorWheel::drawPointer(QPainter& p)
+{
+    
+    float h, s, v;
+    selectedColor.getHsvF(&h, &s, &v);
+    
+    // If didn't change color basically (will probs change this)
+    if (v == 0)
+    {
+        p.setPen(Qt::gray);
+        p.setBrush(Qt::white);
+    }
+    else
+    {
+        p.setPen(Qt::black);
+        p.setBrush(selectedColor);
+    }
+
+    QLineF line = QLineF::fromPolar(RADIUS * s, 360 * (1 - h));
+    line.translate(rect().center());
+    p.drawEllipse(line.p2(), 4, 4);
+}
+
 void ColorWheel::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
@@ -17,7 +40,7 @@ void ColorWheel::paintEvent(QPaintEvent *event)
     QPainter p(this);
     p.setRenderHint(QPainter::Antialiasing);
 
-    QPointF center(RADIUS, RADIUS);
+    QPointF center = rect().center();
     
     // The color gradient 
     QConicalGradient hsvGradient(center, 0);
@@ -43,13 +66,15 @@ void ColorWheel::paintEvent(QPaintEvent *event)
     // Draw the white radial gradient on top
     p.setBrush(whiteGradient);
     p.drawEllipse(rect());
+
+    drawPointer(p);
 }
 
 void ColorWheel::mousePressEvent(QMouseEvent *event)
 {
     float h,s;
 
-    QPointF center(RADIUS, RADIUS);
+    QPointF center = rect().center();
     QPointF clickPos = event->pos();
 
     QLineF line(center, clickPos);
@@ -63,4 +88,5 @@ void ColorWheel::mousePressEvent(QMouseEvent *event)
         emit ColorSelected(1, selectedColor);
     else // Can also be the scroll wheel
         emit ColorSelected(0, selectedColor);
+    update();
 }
